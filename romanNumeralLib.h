@@ -2,6 +2,7 @@
 #define ROMAN_NUMERAL_H
 
 #include <stdint.h>
+#define MAX_ROMAN_NUMERAL_SIZE 13
 
 typedef struct RomanNumeral RomanNumeral;
 
