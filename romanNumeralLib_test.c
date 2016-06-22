@@ -16,6 +16,13 @@ START_TEST (test_roman_numeral_buid_returns_non_null)
 }
 END_TEST
 
+START_TEST (test_roman_numeral_buid_with_empty_string_returns_null) 
+{
+   RomanNumeral *rn = romanNumeral_new("");
+   ck_assert_msg(rn == NULL, "Null string should return null roman numeral pointer");
+}
+END_TEST
+
 Suite * roman_numeral_input_suite(void)
 {
     Suite *s;
@@ -28,6 +35,7 @@ Suite * roman_numeral_input_suite(void)
 
     tcase_add_test(tc_core, test_roman_numeral_buid_with_null_string_returns_null) ;
     tcase_add_test(tc_core, test_roman_numeral_buid_returns_non_null) ;
+    tcase_add_test(tc_core, test_roman_numeral_buid_with_empty_string_returns_null) ;
     suite_add_tcase(s, tc_core);
 
     return s;

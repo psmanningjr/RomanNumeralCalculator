@@ -12,7 +12,7 @@ RomanNumeral *romanNumeral_new(char *valueStr)
 {
    RomanNumeral *rn;
 
-   if (valueStr == NULL )
+   if (valueStr == NULL || valueStr[0] == '\0')
    {
       return NULL;
    }
