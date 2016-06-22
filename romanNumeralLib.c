@@ -16,5 +16,9 @@ RomanNumeral *romanNumeral_new(char *valueStr)
    {
       return NULL;
    }
+  
+   rn = malloc(sizeof(RomanNumeral));
+
+   return rn;
 }
 
