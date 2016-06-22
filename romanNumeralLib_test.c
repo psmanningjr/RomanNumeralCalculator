@@ -73,6 +73,14 @@ START_TEST (test_roman_numeral_decodes_letter_C)
 }
 END_TEST
 
+START_TEST (test_roman_numeral_decodes_letter_D) 
+{
+   RomanNumeral *rn = romanNumeral_new("D");
+   ck_assert_int_eq(romanNumeral_value(rn), 500);
+   romanNumeral_free(rn);
+}
+END_TEST
+
 Suite * roman_numeral_input_suite(void)
 {
     Suite *s;
@@ -92,6 +100,7 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_X);
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_L);
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_C);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_D);
     suite_add_tcase(s, tc_core);
 
     return s;
