@@ -33,11 +33,11 @@ int32_t decode_value(char *value_str)
 {
    return decode_char(value_str);
 }
-#define ROMAN_DIGITS 6
+#define ROMAN_DIGITS 7
 int32_t decode_char(char *character)
 {
-   int value[ROMAN_DIGITS] = {1, 5, 10, 50, 100, 500}; 
-   int index = strcspn("IVXLCD",character); 
+   int value[ROMAN_DIGITS] = {1, 5, 10, 50, 100, 500, 1000}; 
+   int index = strcspn("IVXLCDM",character); 
    if (index != ROMAN_DIGITS) 
    {  
       return value[index];
