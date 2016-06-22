@@ -21,16 +21,27 @@ RomanNumeral *romanNumeral_new(char *valueStr)
 
    if (rn != NULL) 
    {
-     rn->valueString = malloc(strlen(valueStr)); 
-     strcpy(rn->valueString, valueStr);
+      rn->valueString = malloc(strlen(valueStr)); 
+      strcpy(rn->valueString, valueStr);
+      rn->value = decode_value(rn->valueString);
    }
 
    return rn;
 }
 
+int32_t decode_value(char *value_str)
+{
+   return 1;
+}
+
 char *romanNumeral_numeral_str(RomanNumeral *rn)
 {
    return rn->valueString;
+}
+
+int32_t romanNumeral_value(RomanNumeral *rn)
+{
+   return rn->value;
 }
 
 void romanNumeral_free(RomanNumeral *rn)
