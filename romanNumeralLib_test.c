@@ -14,6 +14,7 @@ START_TEST (test_roman_numeral_buid_returns_non_null)
 {
    RomanNumeral *rn = romanNumeral_new("X");
    ck_assert_msg(rn != NULL, "Should return non-null roman numeral pointer");
+   romanNumeral_free(rn);
 }
 END_TEST
 
@@ -28,6 +29,7 @@ START_TEST (test_roman_numeral_buid_sets_value_and_numeral_str_method_returns_th
 {
    RomanNumeral *rn = romanNumeral_new("XXII");
    ck_assert_str_eq(romanNumeral_numeral_str(rn), NUMERAL_STR);
+   romanNumeral_free(rn);
 }
 END_TEST
 
@@ -44,6 +46,7 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_buid_with_null_string_returns_null) ;
     tcase_add_test(tc_core, test_roman_numeral_buid_returns_non_null) ;
     tcase_add_test(tc_core, test_roman_numeral_buid_with_empty_string_returns_null) ;
+    tcase_add_test(tc_core, test_roman_numeral_buid_sets_value_and_numeral_str_method_returns_the_original_string);
     suite_add_tcase(s, tc_core);
 
     return s;

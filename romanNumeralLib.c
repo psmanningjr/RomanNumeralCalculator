@@ -19,10 +19,23 @@ RomanNumeral *romanNumeral_new(char *valueStr)
   
    rn = malloc(sizeof(RomanNumeral));
 
+   if (rn != NULL) 
+   {
+     rn->valueString = malloc(strlen(valueStr)); 
+     strcpy(rn->valueString, valueStr);
+   }
+
    return rn;
 }
 
 char *romanNumeral_numeral_str(RomanNumeral *rn)
 {
-   return "";
+   return rn->valueString;
 }
+
+void romanNumeral_free(RomanNumeral *rn)
+{
+   free(rn->valueString);
+   free(rn);
+}
+
