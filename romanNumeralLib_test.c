@@ -89,6 +89,38 @@ START_TEST (test_roman_numeral_decodes_letter_M)
 }
 END_TEST
 
+START_TEST (test_roman_numeral_decodes_repeat_two_digits) 
+{
+   RomanNumeral *rn = romanNumeral_new("II");
+   ck_assert_int_eq(romanNumeral_value(rn), 2);
+   romanNumeral_free(rn);
+   
+   rn = romanNumeral_new("XX");
+   ck_assert_int_eq(romanNumeral_value(rn), 20);
+   romanNumeral_free(rn);
+
+   rn = romanNumeral_new("CC");
+   ck_assert_int_eq(romanNumeral_value(rn), 200);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_decodes_repeat_three_digits) 
+{
+   RomanNumeral *rn = romanNumeral_new("III");
+   ck_assert_int_eq(romanNumeral_value(rn), 3);
+   romanNumeral_free(rn);
+   
+   rn = romanNumeral_new("XXX");
+   ck_assert_int_eq(romanNumeral_value(rn), 30);
+   romanNumeral_free(rn);
+
+   rn = romanNumeral_new("CCC");
+   ck_assert_int_eq(romanNumeral_value(rn), 300);
+   romanNumeral_free(rn);
+}
+END_TEST
+
 Suite * roman_numeral_input_suite(void)
 {
     Suite *s;
@@ -110,6 +142,8 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_C);
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_D);
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_M);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_two_digits);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_three_digits);
     suite_add_tcase(s, tc_core);
 
     return s;
