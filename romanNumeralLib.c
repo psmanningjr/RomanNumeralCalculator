@@ -31,7 +31,21 @@ RomanNumeral *romanNumeral_new(char *valueStr)
 
 int32_t decode_value(char *value_str)
 {
-   return 1;
+   return decode_char(value_str);
+}
+#define ROMAN_DIGITS 2
+int32_t decode_char(char *character)
+{
+   int value[ROMAN_DIGITS] = {1, 5}; 
+   int index = strcspn("IV",character); 
+   if (index != ROMAN_DIGITS) 
+   {  
+      return value[index];
+   } 
+   else 
+   {
+      return 0;
+   }
 }
 
 char *romanNumeral_numeral_str(RomanNumeral *rn)
