@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <check.h>
 #include "romanNumeralLib.h"
+#define NUMERAL_STR "XXII"
 
 START_TEST (test_roman_numeral_buid_with_null_string_returns_null) 
 {
@@ -20,6 +21,13 @@ START_TEST (test_roman_numeral_buid_with_empty_string_returns_null)
 {
    RomanNumeral *rn = romanNumeral_new("");
    ck_assert_msg(rn == NULL, "Null string should return null roman numeral pointer");
+}
+END_TEST
+
+START_TEST (test_roman_numeral_buid_sets_value_and_numeral_str_method_returns_the_original_string) 
+{
+   RomanNumeral *rn = romanNumeral_new("XXII");
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), NUMERAL_STR);
 }
 END_TEST
 

@@ -22,3 +22,7 @@ RomanNumeral *romanNumeral_new(char *valueStr)
    return rn;
 }
 
+char *romanNumeral_numeral_str(RomanNumeral *rn)
+{
+   return "";
+}

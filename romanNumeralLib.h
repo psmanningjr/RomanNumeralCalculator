@@ -6,5 +6,6 @@
 typedef struct RomanNumeral RomanNumeral;
 
 RomanNumeral *romanNumeral_new(char *valueStr);
+char *romanNumeral_numeral_str(RomanNumeral *rn);
 
 #endif /* ROMAN_NUMERAL_H */
