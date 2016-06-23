@@ -184,6 +184,38 @@ START_TEST (test_roman_numeral_decodes_subtraction_pair_IX)
 }
 END_TEST
 
+START_TEST (test_roman_numeral_decodes_subtraction_pair_XL)
+{
+   RomanNumeral *rn = romanNumeral_new("XL");
+   ck_assert_int_eq(romanNumeral_value(rn), 40);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_decodes_subtraction_pair_XC)
+{
+   RomanNumeral *rn = romanNumeral_new("XC");
+   ck_assert_int_eq(romanNumeral_value(rn), 90);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_decodes_subtraction_pair_CD)
+{
+   RomanNumeral *rn = romanNumeral_new("CD");
+   ck_assert_int_eq(romanNumeral_value(rn), 400);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_decodes_subtraction_pair_CM)
+{
+   RomanNumeral *rn = romanNumeral_new("CM");
+   ck_assert_int_eq(romanNumeral_value(rn), 900);
+   romanNumeral_free(rn);
+}
+END_TEST
+
 Suite * roman_numeral_input_suite(void)
 {
     Suite *s;
@@ -214,6 +246,10 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_M);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IV);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IX);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XL);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XC);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CD);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CM);
     suite_add_tcase(s, tc_core);
 
     return s;
