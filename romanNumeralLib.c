@@ -65,35 +65,19 @@ char *encode_value(int32_t value)
    if (value == 1000) 
    {
       *ptr++ = 'M';
+      value -=  value/1000 * 1000;
    }
-//   else if (value == 100) 
-//   {
-//      *ptr++ = 'C';
-//   }
-//   else if (value == 500) 
-//   {
-//      *ptr++ = 'D';
-//   }
-//   else if (value == 50) 
-//   {
-//      *ptr++ = 'L';
-//   }
-//   else if (value == 10) 
-//   {
-//      *ptr++ = 'X';
-//   }
-   else if (value > 99) 
+   if (value > 99) 
    {
       ptr = outputSpecifedNumberOfUnits(value/100, ptr,4);
+      value -=  value/100 * 100;
    }
-   else if (value > 9) 
+   if (value > 9) 
    {
       ptr = outputSpecifedNumberOfUnits(value/10, ptr,2);
+      value -=  value/10 * 10;
    }
-   else 
-   {
-      ptr = outputSpecifedNumberOfUnits(value, ptr,0);
-   }
+   ptr = outputSpecifedNumberOfUnits(value, ptr,0);
    *ptr = '\0';
    printf(" value %d created new string '%s'\n",value, result);
    return  result;
@@ -214,13 +198,20 @@ int subtractionDenomination(char *digits,int denomination)
 int denominationRepeated(char *digits,int denomination)
 {
 printf("denom = %d next string in repeat is %s\n",denomination, digits);
+printf("--------------unitdenom = %d \n",unitDenomination(denomination));
    char *nextNumeral = ++digits;
+   int unitDenom = unitDenomination(denomination);
    if (denomination > 0 &&
-       *nextNumeral == ROMAN_NUMERALS[denomination-1]) 
+       *nextNumeral == ROMAN_NUMERALS[unitDenom]) 
    {
-      return denomination-1;
+      return unitDenom;
    }
    return INVALID_DENOMINATION;
+}
+
+int unitDenomination(int denomination)
+{
+   return (denomination % 2 == 0) ? denomination-2 : denomination-1;
 }
 
 int denominationValid(int denomination)

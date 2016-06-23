@@ -13,6 +13,8 @@
 #define ROMAN_NUMERALS_NINE_STR "IX"
 #define ROMAN_NUMERAL_TEN_STR "X"
 #define ROMAN_NUMERALS_ELEVEN_STR "XI"
+#define ROMAN_NUMERALS_TWELVE_STR "XII"
+#define ROMAN_NUMERALS_THIRTEEN_STR "XIII"
 #define ROMAN_NUMERALS_TWENTY_STR "XX"
 #define ROMAN_NUMERALS_FOURTY_STR "XL"
 #define ROMAN_NUMERAL_FIFTY_STR "L"
@@ -88,6 +90,16 @@ START_TEST (test_roman_numeral_decodes_letter_one_letter_addition)
    rn = romanNumeral_new(ROMAN_NUMERALS_ELEVEN_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 11);
    ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_ELEVEN_STR);
+   romanNumeral_free(rn);
+
+   rn = romanNumeral_new(ROMAN_NUMERALS_TWELVE_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 12);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_TWELVE_STR);
+   romanNumeral_free(rn);
+
+   rn = romanNumeral_new(ROMAN_NUMERALS_THIRTEEN_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 13);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_THIRTEEN_STR);
    romanNumeral_free(rn);
 
 }
@@ -287,7 +299,7 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_L);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_C);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_M);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_one_letter_addition);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_one_letter_addition);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IV);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IX);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XL);
