@@ -281,19 +281,19 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_D);
     tcase_add_test(tc_core, test_roman_numeral_decodes_letter_M);
     tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_two_digits);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_three_digits);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_three_digits);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_V);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_X);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_L);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_C);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_M);
 //    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_one_letter_addition);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IV);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IX);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XL);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XC);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CD);
-//    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CM);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IV);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IX);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XL);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XC);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CD);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CM);
     suite_add_tcase(s, tc_core);
 
     return s;
