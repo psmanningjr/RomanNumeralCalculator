@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "romanNumeralLib.h"
 
 #define ROMAN_DIGITS 7
@@ -22,6 +23,7 @@ void initializeVariables(RomanNumeral *rn, char *valueStr);
 char *encode_value(int32_t value);
 int32_t decode_value(char *value_str);
 int32_t numeralValue(int denomination, char *digits);
+char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination);
 
 
 RomanNumeral *romanNumeral_new(char *valueStr) 
@@ -59,44 +61,88 @@ int32_t decode_value(char *value_str)
 char *encode_value(int32_t value)
 {
    char *result = malloc(MAX_ROMAN_NUMERAL_SIZE);
+   char *ptr = result; 
    if (value == 1000) 
    {
-      *result = 'M';
+      *ptr++ = 'M';
    }
-   else if (value == 100) 
+//   else if (value == 100) 
+//   {
+//      *ptr++ = 'C';
+//   }
+//   else if (value == 500) 
+//   {
+//      *ptr++ = 'D';
+//   }
+//   else if (value == 50) 
+//   {
+//      *ptr++ = 'L';
+//   }
+//   else if (value == 10) 
+//   {
+//      *ptr++ = 'X';
+//   }
+   else if (value > 99) 
    {
-      *result = 'C';
+      ptr = outputSpecifedNumberOfUnits(value/100, ptr,4);
    }
-   else if (value == 50) 
+   else if (value > 9) 
    {
-      *result = 'L';
+      ptr = outputSpecifedNumberOfUnits(value/10, ptr,2);
    }
-   else if (value == 10) 
+   else 
    {
-      *result = 'X';
+      ptr = outputSpecifedNumberOfUnits(value, ptr,0);
    }
-   else if (value == 5) 
-   {
-      *result = 'V';
-   } 
-   else
-   {
-      *result = 'I';
-   }
-   result[1] = '\0';
+   *ptr = '\0';
+   printf(" value %d created new string '%s'\n",value, result);
    return  result;
+}
+
+char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination)
+{
+      char letterI = ROMAN_NUMERALS[baseDenomination];
+      char letterV = ROMAN_NUMERALS[baseDenomination+1];
+      char letterX = ROMAN_NUMERALS[baseDenomination+2];
+      if (numUnits == 4) 
+      {
+         *ptr++ = letterI;
+         *ptr++ = letterV;
+      }
+      else if (numUnits == 9) 
+      {
+         *ptr++ = letterI;
+         *ptr++ = letterX;
+      }
+      else 
+      {
+         if (numUnits >= 5) 
+         {
+            *ptr++ = letterV;
+            numUnits -= 5;
+         }
+         int count;
+         for (count = 0; count < numUnits; count++)
+         {
+            *ptr++ = letterI; 
+         }
+      }
+   return ptr;
 }
 
 int32_t decode_char(char *character)
 {
    int denomination = denominationOfNumeral(character); 
-   if (index <0) {  return 0; }
+printf("denom %d digits %s\n",denomination, character);
+   if (denomination < 0) {  return 0; }
    return numeralValue(denomination, character);
 }
 
 int denominationOfNumeral(char *character)
 {
-   int index = strcspn(ROMAN_NUMERALS,character); 
+   char singleLetterStr[] = " ";
+   singleLetterStr[0] = *character;
+   int index = strcspn(ROMAN_NUMERALS, singleLetterStr); 
    if (isRomanNumeral(index)) 
    {  
       return index;
@@ -114,17 +160,27 @@ int isRomanNumeral(int strcspnResult)
 
 int32_t numeralValue(int denomination, char *digits)
 {
-   int secondDigitDenomination =  nextDigitDenomination(digits, 
+   int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
                                                          denomination);
-   if (subtractionNeeded(secondDigitDenomination))
+   if (subtractionNeeded(subtractionSecondDigitDenomination))
    {
-      return denominationValues[secondDigitDenomination] - 
+      return denominationValues[subtractionSecondDigitDenomination] - 
                                          denominationValues[denomination];
+   }
+   else
+   {
+      int repeatedNextDenomination = denominationRepeated(digits, denomination);
+   printf("denom = %d  repeatedNextDenom %d\n",denomination, repeatedNextDenomination);
+      if (repeatedDigits(repeatedNextDenomination))
+      {
+         return denominationValues[repeatedNextDenomination]
+                        *(strlen(digits)-1) + denominationValues[denomination];
+      }
    }
    return denominationValues[denomination]*strlen(digits);
 }
 
-int nextDigitDenomination(char *digits, int denomination)
+int nextDigitDenominationForSubtraction(char *digits, int denomination)
 {
    int nextDenomination = INVALID_DENOMINATION;
    if (subtractableDenomination(denomination))
@@ -155,11 +211,32 @@ int subtractionDenomination(char *digits,int denomination)
    return INVALID_DENOMINATION;
 }
 
-int subtractionNeeded(int nextDigitDenomination)
+int denominationRepeated(char *digits,int denomination)
 {
-   return nextDigitDenomination > INVALID_DENOMINATION;
+printf("denom = %d next string in repeat is %s\n",denomination, digits);
+   char *nextNumeral = ++digits;
+   if (denomination > 0 &&
+       *nextNumeral == ROMAN_NUMERALS[denomination-1]) 
+   {
+      return denomination-1;
+   }
+   return INVALID_DENOMINATION;
 }
 
+int denominationValid(int denomination)
+{
+   return denomination > INVALID_DENOMINATION;
+}
+
+int subtractionNeeded(int nextDigitDenomination)
+{
+   return denominationValid(nextDigitDenomination);
+}
+
+int repeatedDigits(int repeatedNextDenomination)
+{
+   return denominationValid(repeatedNextDenomination);
+}
 char *romanNumeral_numeral_str(RomanNumeral *rn)
 {
    return rn->valueString;
