@@ -241,6 +241,12 @@ int32_t romanNumeral_value(RomanNumeral *rn)
    return rn->value;
 }
 
+void romanNumeral_add(RomanNumeral *rn_dest, RomanNumeral *rn_added)
+{
+   rn_dest->value += rn_added->value;
+   rn_dest->valueString = encode_value(rn_dest->value);
+}
+
 void romanNumeral_free(RomanNumeral *rn)
 {
    free(rn->inputString);

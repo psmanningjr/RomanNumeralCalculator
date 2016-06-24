@@ -2,16 +2,16 @@
 #include <check.h>
 #include "romanNumeralLib.h"
 #define SINGLE_DIGIT_NUMERAL_STR "I"
-#define ROMAN_NUMERAL_ONE_STR "I"
+#define ROMAN_NUMERALS_ONE_STR "I"
 #define ROMAN_NUMERALS_TWO_STR "II"
 #define ROMAN_NUMERALS_THREE_STR "III"
 #define ROMAN_NUMERALS_FOUR_STR "IV"
-#define ROMAN_NUMERAL_FIVE_STR "V"
+#define ROMAN_NUMERALS_FIVE_STR "V"
 #define ROMAN_NUMERALS_SIX_STR "VI"
 #define ROMAN_NUMERALS_SEVEN_STR "VII"
 #define ROMAN_NUMERALS_EIGHT_STR "VIII"
 #define ROMAN_NUMERALS_NINE_STR "IX"
-#define ROMAN_NUMERAL_TEN_STR "X"
+#define ROMAN_NUMERALS_TEN_STR "X"
 #define ROMAN_NUMERALS_ELEVEN_STR "XI"
 #define ROMAN_NUMERALS_TWELVE_STR "XII"
 #define ROMAN_NUMERALS_THIRTEEN_STR "XIII"
@@ -22,16 +22,17 @@
 #define ROMAN_NUMERALS_TWENTY_STR "XX"
 #define ROMAN_NUMERALS_TWENTYONE_STR "XXI"
 #define ROMAN_NUMERALS_THIRTY_STR "XXX"
-#define ROMAN_NUMERALS_FOURTY_STR "XL"
-#define ROMAN_NUMERAL_FIFTY_STR "L"
+#define ROMAN_NUMERALS_FORTY_STR "XL"
+#define ROMAN_NUMERALS_FIFTY_STR "L"
 #define ROMAN_NUMERALS_NINETY_STR "XC"
-#define ROMAN_NUMERAL_ONE_HUNDRED_STR "C"
+#define ROMAN_NUMERALS_ONE_HUNDRED_STR "C"
 #define ROMAN_NUMERALS_THREE_HUNDRED_STR "CCC"
 #define ROMAN_NUMERALS_FOUR_HUNDRED_STR "CD"
-#define ROMAN_NUMERAL_FIVE_HUNDRED_STR "D"
+#define ROMAN_NUMERALS_FIVE_HUNDRED_STR "D"
 #define ROMAN_NUMERALS_NINE_HUNDRED_STR "CM"
-#define ROMAN_NUMERAL_ONE_THOUSAND_STR "M"
+#define ROMAN_NUMERALS_ONE_THOUSAND_STR "M"
 #define ROMAN_NUMERALS_BIGNUM_STR "MCMXLVIII"
+#define ROMAN_NUMERALS_ONE_HUNDRED_FORTY_STR "CXL"
 
 START_TEST (test_roman_numeral_buid_with_null_string_returns_null) 
 {
@@ -42,7 +43,7 @@ END_TEST
 
 START_TEST (test_roman_numeral_buid_returns_non_null) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_TEN_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_TEN_STR);
    ck_assert_msg(rn != NULL, "Should return non-null roman numeral pointer");
    romanNumeral_free(rn);
 }
@@ -66,18 +67,18 @@ END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_I) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_ONE_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 1);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_ONE_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_V) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIVE_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FIVE_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 5);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIVE_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FIVE_STR);
    romanNumeral_free(rn);
 }
 END_TEST
@@ -159,45 +160,45 @@ END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_X) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_TEN_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_TEN_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 10);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_TEN_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_TEN_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_L) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIFTY_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FIFTY_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 50);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIFTY_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FIFTY_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_C) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_HUNDRED_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_ONE_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 100);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_HUNDRED_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_ONE_HUNDRED_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_D) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIVE_HUNDRED_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FIVE_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 500);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIVE_HUNDRED_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FIVE_HUNDRED_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
 START_TEST (test_roman_numeral_handles_letter_M) 
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_THOUSAND_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_ONE_THOUSAND_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 1000);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_THOUSAND_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_ONE_THOUSAND_STR);
    romanNumeral_free(rn);
 }
 END_TEST
@@ -259,9 +260,9 @@ END_TEST
 
 START_TEST (test_roman_numeral_handles_subtraction_pair_XL)
 {
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FOURTY_STR);
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FORTY_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 40);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FOURTY_STR);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FORTY_STR);
    romanNumeral_free(rn);
 }
 END_TEST
@@ -302,6 +303,19 @@ START_TEST (test_roman_numeral_handles_subtraction_pair_MCMXLVIII)
 }
 END_TEST
 
+START_TEST (test_roman_numeral_handles_addition)
+{
+   RomanNumeral *rn1 = romanNumeral_new(ROMAN_NUMERALS_ONE_HUNDRED_STR);
+   RomanNumeral *rn2 = romanNumeral_new(ROMAN_NUMERALS_FORTY_STR);
+
+   romanNumeral_add(rn1,rn2);
+   ck_assert_int_eq(romanNumeral_value(rn1), 140);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn1), ROMAN_NUMERALS_ONE_HUNDRED_FORTY_STR);
+   romanNumeral_free(rn1);
+   romanNumeral_free(rn2);
+}
+END_TEST
+
 Suite * roman_numeral_input_suite(void)
 {
     Suite *s;
@@ -336,6 +350,7 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_handles_XIV);
     tcase_add_test(tc_core, test_roman_numeral_handles_XIX); 
     tcase_add_test(tc_core, test_roman_numeral_handles_XXI); 
+    tcase_add_test(tc_core, test_roman_numeral_handles_addition); 
     suite_add_tcase(s, tc_core);
 
     return s;
