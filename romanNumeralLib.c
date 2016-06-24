@@ -19,8 +19,9 @@ struct RomanNumeral
    char *valueString;
 };
 
-int32_t denominationValues[ROMAN_DIGITS] = {1, 5, 10, 50, 100, 500, 1000}; 
+int32_t numeralDigitValues[ROMAN_DIGITS] = {1, 5, 10, 50, 100, 500, 1000}; 
 
+RomanNumeral *createRomanNumeral(char *valueStr);
 void initializeVariables(RomanNumeral *rn, char *valueStr);
 char *encode_value(int32_t value);
 int32_t decode_value(char *value_str);
@@ -32,14 +33,21 @@ RomanNumeral *romanNumeral_new(char *valueStr)
 {
    RomanNumeral *rn;
 
-   if (emptyInput(valueStr)) { return NULL; }
-   rn = malloc(sizeof(RomanNumeral));
+   rn = createRomanNumeral(valueStr);
    if (rn != NULL) 
    {
       initializeVariables(rn, valueStr);
    }
-
    return rn;
+}
+
+RomanNumeral *createRomanNumeral(char *valueStr)
+{
+   if (emptyInput(valueStr)) 
+   { 
+      return NULL; 
+   }
+   return malloc(sizeof(RomanNumeral));
 }
 
 int emptyInput(char *valueStr)
@@ -53,11 +61,6 @@ void initializeVariables(RomanNumeral *rn, char *valueStr)
    strcpy(rn->inputString, valueStr);
    rn->value = decode_value(rn->inputString);
    rn->valueString = encode_value(rn->value);
-}
-
-int32_t decode_value(char *value_str)
-{
-   return decode_char(value_str);
 }
 
 char *encode_value(int32_t value)
@@ -115,10 +118,35 @@ char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination)
    return ptr;
 }
 
-int32_t decode_char(char *character)
+int32_t decode_value(char *digits)
 {
-   int32_t result = numeralValue(character);
-   return result;
+   int32_t value = 0;
+   int denomination = denominationOfNumeral(digits); 
+   if (denomination == INVALID_DENOMINATION) {  return 0; }
+   int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
+                                                         denomination);
+   if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
+   {
+      value += numeralDigitValues[subtractionSecondDigitDenomination] - 
+                                         numeralDigitValues[denomination];
+   }
+   else
+   {
+      value += numeralDigitValues[denomination];
+      char *currentLetter = digits;
+      currentLetter++;
+      while(*currentLetter != '\0' && 
+         (digitIsRepeat(currentLetter, denomination)))
+      {
+            value += numeralDigitValues[denomination];
+            currentLetter++;
+      }
+      if (*currentLetter != '\0') 
+      {
+         value += decode_value(currentLetter);
+      }
+   }
+   return value;
 }
 
 int denominationOfNumeral(char *character)
@@ -139,37 +167,6 @@ int denominationOfNumeral(char *character)
 int isRomanNumeral(int strcspnResult)
 {
    return (strcspnResult != ROMAN_DIGITS);
-}
-
-int32_t numeralValue(char *digits)
-{
-   int32_t value = 0;
-   int denomination = denominationOfNumeral(digits); 
-   if (denomination == INVALID_DENOMINATION) {  return 0; }
-   int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
-                                                         denomination);
-   if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
-   {
-      value += denominationValues[subtractionSecondDigitDenomination] - 
-                                         denominationValues[denomination];
-   }
-   else
-   {
-      value += denominationValues[denomination];
-      char *currentLetter = digits;
-      currentLetter++;
-      while(*currentLetter != '\0' && 
-         (digitIsRepeat(currentLetter, denomination)))
-      {
-            value += denominationValues[denomination];
-            currentLetter++;
-      }
-      if (*currentLetter != '\0') 
-      {
-         value += numeralValue(currentLetter);
-      }
-   }
-   return value;
 }
 
 int nextDigitDenominationForSubtraction(char *digits, int denomination)
