@@ -30,6 +30,8 @@ int32_t numeralValue(char *digits);
 char * outputForSpecifedDenomination(int numUnits, char *ptr,int baseDenomination);
 char *handleThousands(char *ptr, int32_t *value);
 char *handleDenomination(char *ptr, int32_t *value, int baseDenomination);
+int processTwoDigitSubtraction(char *digits, int32_t *value, int denomination);
+void processRepeatedDigits(char *digits, int32_t *value, int denomination);
 
 
 RomanNumeral *romanNumeral_new(char *valueStr) 
@@ -84,7 +86,7 @@ char *handleThousands(char *ptr, int32_t *value)
    if (*value == maxValue) 
    {
       *ptr++ = 'M';
-      *value =  *value -(*value/maxValue * maxValue);
+      *value -= *value/maxValue * maxValue;
    }
    return ptr;
 }
@@ -95,7 +97,7 @@ char *handleDenomination(char *ptr, int32_t *value, int baseDenomination)
    if (*value > maxValue-1) 
    {
       ptr = outputForSpecifedDenomination(*value/maxValue, ptr,baseDenomination);
-      *value =  *value - *value/maxValue * maxValue;
+      *value -= *value/maxValue * maxValue;
    }
    return ptr;
 }
@@ -134,37 +136,52 @@ int32_t decode_value(char *digits)
 {
    int32_t value = 0;
    int denomination = denominationOfNumeral(digits); 
-   if (denomination == INVALID_DENOMINATION) {  return 0; }
-   int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
-                                                         denomination);
-   if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
-   {
-      value += numeralDigitValues[subtractionSecondDigitDenomination] - 
-                                         numeralDigitValues[denomination];
+   if (denomination == INVALID_DENOMINATION) 
+   {  
+      return 0; 
    }
-   else
+   if (!processTwoDigitSubtraction(digits, &value, denomination))
    {
-      value += numeralDigitValues[denomination];
+      processRepeatedDigits(digits, &value, denomination);
+   }
+   return value;
+}
+
+int processTwoDigitSubtraction(char *digits, int32_t *value, int denomination)
+{
+   int nextDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
+                                                         denomination);
+   int isSubtractionPair  = subtractionNeeded(nextDigitDenomination);
+   if (strlen(digits) == 2 && isSubtractionPair)
+   {
+      *value += numeralDigitValues[nextDigitDenomination] - 
+                                    numeralDigitValues[denomination];
+   }
+   return isSubtractionPair;
+}
+
+void processRepeatedDigits(char *digits, int32_t *value, int denomination)
+{
+      *value += numeralDigitValues[denomination];
       char *currentLetter = digits;
       currentLetter++;
       while(*currentLetter != '\0' && 
          (digitIsRepeat(currentLetter, denomination)))
       {
-            value += numeralDigitValues[denomination];
+            *value += numeralDigitValues[denomination];
             currentLetter++;
       }
       if (*currentLetter != '\0') 
       {
-         value += decode_value(currentLetter);
+         *value += decode_value(currentLetter);
       }
-   }
-   return value;
 }
 
-int denominationOfNumeral(char *character)
+int denominationOfNumeral(char *digits)
 {
    char singleLetterStr[] = " ";
-   singleLetterStr[0] = *character;
+   singleLetterStr[0] = *digits;
+
    int index = strcspn(ROMAN_NUMERALS, singleLetterStr); 
    if (isRomanNumeral(index)) 
    {  
