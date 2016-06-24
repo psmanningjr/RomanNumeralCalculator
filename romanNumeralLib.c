@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "romanNumeralLib.h"
 
+#define TRUE 1
+#define FALSE 0
 #define ROMAN_DIGITS 7
 #define ROMAN_NUMERALS "IVXLCDM"
 #define ONES_DENOMINATION 0
@@ -17,12 +19,12 @@ struct RomanNumeral
    char *valueString;
 };
 
-int denominationValues[ROMAN_DIGITS] = {1, 5, 10, 50, 100, 500, 1000}; 
+int32_t denominationValues[ROMAN_DIGITS] = {1, 5, 10, 50, 100, 500, 1000}; 
 
 void initializeVariables(RomanNumeral *rn, char *valueStr);
 char *encode_value(int32_t value);
 int32_t decode_value(char *value_str);
-int32_t numeralValue(int denomination, char *digits);
+int32_t numeralValue(char *digits);
 char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination);
 
 
@@ -116,10 +118,15 @@ char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination)
 
 int32_t decode_char(char *character)
 {
-   int denomination = denominationOfNumeral(character); 
-printf("denom %d digits %s\n",denomination, character);
-   if (denomination < 0) {  return 0; }
-   return numeralValue(denomination, character);
+//   int denomination = denominationOfNumeral(character); 
+//printf("denom %d digits %s\n",denomination, character);
+//   if (denomination < 0) {  return 0; }
+//   if (denomination == 0) 
+//   {
+      int32_t result = numeralValue(character);
+printf("================final result === %d\n",result);
+      return result;
+//   }
 }
 
 int denominationOfNumeral(char *character)
@@ -142,26 +149,84 @@ int isRomanNumeral(int strcspnResult)
    return (strcspnResult != ROMAN_DIGITS);
 }
 
-int32_t numeralValue(int denomination, char *digits)
+int32_t numeralValue(char *digits)
 {
+printf("numeralValue_____________________________________________________\n");
+   int32_t value = 0;
+   int denomination = denominationOfNumeral(digits); 
+   if (denomination == INVALID_DENOMINATION) {  return 0; }
+printf("denom %d digits %s\n",denomination, digits);
    int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
                                                          denomination);
-   if (subtractionNeeded(subtractionSecondDigitDenomination))
+   if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
+   {
+      value += denominationValues[subtractionSecondDigitDenomination] - 
+                                         denominationValues[denomination];
+   }
+   else
+   {
+      value += denominationValues[denomination];
+      char *currentLetter = digits;
+      currentLetter++;
+      while(*currentLetter != '\0' && 
+         (nextDigitIsRepeat(currentLetter, denomination)))
+      {
+            printf("----- adding repeat \n");
+            value += denominationValues[denomination];
+            currentLetter++;
+      }
+      if (*currentLetter != '\0') 
+      {
+         value += numeralValue(currentLetter);
+      }
+   }
+   return value;
+}
+
+int32_t numeralValueold(char *digits)
+{
+      int32_t value = 0;
+printf("numeralValue_____________________________________________________\n");
+   int denomination = denominationOfNumeral(digits); 
+printf("denom %d digits %s\n",denomination, digits);
+   if (denomination == INVALID_DENOMINATION) {  return 0; }
+   int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
+                                                         denomination);
+   if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
    {
       return denominationValues[subtractionSecondDigitDenomination] - 
                                          denominationValues[denomination];
    }
    else
    {
-      int repeatedNextDenomination = denominationRepeated(digits, denomination);
-   printf("denom = %d  repeatedNextDenom %d\n",denomination, repeatedNextDenomination);
-      if (repeatedDigits(repeatedNextDenomination))
+      char *currentLetter = digits;
+      value += denominationValues[denomination];
+      int repeatedNextDenomination;
+      while(*currentLetter != '\0') 
       {
-         return denominationValues[repeatedNextDenomination]
-                        *(strlen(digits)-1) + denominationValues[denomination];
+            repeatedNextDenomination = denominationRepeated(currentLetter, 
+                                                               denomination); 
+   printf("-----top of loop denom = %d  repeatedNextDenom %d\n",denomination, repeatedNextDenomination);
+         currentLetter++;
+         if (repeatedDigits(repeatedNextDenomination))
+         {
+printf("************************ adding repeated %s \n", currentLetter);
+            // V value
+            value += denominationValues[denomination] + 
+                      numeralValue(currentLetter);
+// denominationValues[repeatedNextDenomination]
+//                       *(strlen(digits)-1) + denominationValues[denomination];
+         }
+         else
+         {
+            // I value
+            value += denominationValues[denomination];
+         }
       }
+   printf("^^^^^^^^^^^^^^^^^^^^ returning value of %d\n", value);
    }
-   return denominationValues[denomination]*strlen(digits);
+   return value;
+//   return denominationValues[denomination]*strlen(digits);
 }
 
 int nextDigitDenominationForSubtraction(char *digits, int denomination)
@@ -195,12 +260,19 @@ int subtractionDenomination(char *digits,int denomination)
    return INVALID_DENOMINATION;
 }
 
+int nextDigitIsRepeat(char *digits,int prevDenomination)
+{
+   char *nextNumeral = ++digits;
+   return (*nextNumeral == ROMAN_NUMERALS[prevDenomination]); 
+}
+
 int denominationRepeated(char *digits,int denomination)
 {
 printf("denom = %d next string in repeat is %s\n",denomination, digits);
-printf("--------------unitdenom = %d \n",unitDenomination(denomination));
+//printf("--------------unitdenom = %d \n",unitDenomination(denomination));
    char *nextNumeral = ++digits;
-   int unitDenom = unitDenomination(denomination);
+//   int unitDenom = unitDenomination(denomination);
+   int unitDenom = denomination-1;
    if (denomination > 0 &&
        *nextNumeral == ROMAN_NUMERALS[unitDenom]) 
    {

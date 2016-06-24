@@ -1,12 +1,12 @@
 CC=gcc
-
+CFLAGS = -g
 LIBS= /usr/lib/i386-linux-gnu/libcheck.a -lm -lpthread -lrt
 
 
 OBJ = romanNumeralLib.o
 
-#%.o: %.c $(DEPS)
-#		$(CC) -c -o $@ $< $(CFLAGS)
+#%.o: %.c
+#		$(CC) -g -c -o $@ $< $(CFLAGS)
 		
 all:  romanNumeralLib.o romanNumeralLib_test
 

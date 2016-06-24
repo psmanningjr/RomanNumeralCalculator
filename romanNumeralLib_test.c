@@ -15,6 +15,7 @@
 #define ROMAN_NUMERALS_ELEVEN_STR "XI"
 #define ROMAN_NUMERALS_TWELVE_STR "XII"
 #define ROMAN_NUMERALS_THIRTEEN_STR "XIII"
+#define ROMAN_NUMERALS_FIFTEEN_STR "XV"
 #define ROMAN_NUMERALS_TWENTY_STR "XX"
 #define ROMAN_NUMERALS_FOURTY_STR "XL"
 #define ROMAN_NUMERAL_FIFTY_STR "L"
@@ -70,7 +71,7 @@ START_TEST (test_roman_numeral_decodes_letter_V)
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_one_letter_addition) 
+START_TEST (test_roman_numeral_decodes_digit_letter_addition) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_SIX_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 6);
@@ -101,10 +102,18 @@ START_TEST (test_roman_numeral_decodes_letter_one_letter_addition)
    ck_assert_int_eq(romanNumeral_value(rn), 13);
    ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_THIRTEEN_STR);
    romanNumeral_free(rn);
-
 }
 END_TEST
 
+START_TEST (test_roman_numeral_decodes_XV) 
+{
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FIFTEEN_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 15);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FIFTEEN_STR);
+   romanNumeral_free(rn);
+}
+
+END_TEST
 START_TEST (test_roman_numeral_decodes_letter_X) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_TEN_STR);
@@ -299,13 +308,14 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_L);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_C);
     tcase_add_test(tc_core, test_roman_numeral_encodes_letter_M);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_one_letter_addition);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_digit_letter_addition);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IV);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IX);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XL);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XC);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CD);
     tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CM);
+    tcase_add_test(tc_core, test_roman_numeral_decodes_XV);
     suite_add_tcase(s, tc_core);
 
     return s;
