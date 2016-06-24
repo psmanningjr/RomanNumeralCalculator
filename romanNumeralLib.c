@@ -10,6 +10,7 @@
 #define ONES_DENOMINATION 0
 #define TENS_DENOMINATION 2
 #define HUNDREDS_DENOMINATION 4
+#define THOUSANDS_DENOMINATION 6
 #define INVALID_DENOMINATION -1
 
 struct RomanNumeral
@@ -26,7 +27,9 @@ void initializeVariables(RomanNumeral *rn, char *valueStr);
 char *encode_value(int32_t value);
 int32_t decode_value(char *value_str);
 int32_t numeralValue(char *digits);
-char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination);
+char * outputForSpecifedDenomination(int numUnits, char *ptr,int baseDenomination);
+char *handleThousands(char *ptr, int32_t *value);
+char *handleDenomination(char *ptr, int32_t *value, int baseDenomination);
 
 
 RomanNumeral *romanNumeral_new(char *valueStr) 
@@ -67,27 +70,36 @@ char *encode_value(int32_t value)
 {
    char *result = malloc(MAX_ROMAN_NUMERAL_SIZE);
    char *ptr = result; 
-   if (value == 1000) 
-   {
-      *ptr++ = 'M';
-      value -=  value/1000 * 1000;
-   }
-   if (value > 99) 
-   {
-      ptr = outputSpecifedNumberOfUnits(value/100, ptr,4);
-      value -=  value/100 * 100;
-   }
-   if (value > 9) 
-   {
-      ptr = outputSpecifedNumberOfUnits(value/10, ptr,2);
-      value -=  value/10 * 10;
-   }
-   ptr = outputSpecifedNumberOfUnits(value, ptr,0);
+   ptr = handleThousands(ptr, &value);
+   ptr = handleDenomination(ptr, &value, HUNDREDS_DENOMINATION);
+   ptr = handleDenomination(ptr, &value, TENS_DENOMINATION);
+   ptr = outputForSpecifedDenomination(value, ptr,ONES_DENOMINATION);
    *ptr = '\0';
    return  result;
 }
 
-char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination)
+char *handleThousands(char *ptr, int32_t *value)
+{
+   int32_t maxValue = numeralDigitValues[THOUSANDS_DENOMINATION];
+   if (*value == maxValue) 
+   {
+      *ptr++ = 'M';
+      *value =  *value -(*value/maxValue * maxValue);
+   }
+   return ptr;
+}
+
+char *handleDenomination(char *ptr, int32_t *value, int baseDenomination)
+{
+   int32_t maxValue = numeralDigitValues[baseDenomination];
+   if (*value > maxValue-1) 
+   {
+      ptr = outputForSpecifedDenomination(*value/maxValue, ptr,baseDenomination);
+      *value =  *value - *value/maxValue * maxValue;
+   }
+   return ptr;
+}
+char * outputForSpecifedDenomination(int numUnits, char *ptr,int baseDenomination)
 {
       char letterI = ROMAN_NUMERALS[baseDenomination];
       char letterV = ROMAN_NUMERALS[baseDenomination+1];
