@@ -10,6 +10,7 @@ RomanNumeral *romanNumeral_new(char *valueStr);
 char *romanNumeral_numeral_str(RomanNumeral *rn);
 int32_t romanNumeral_value(RomanNumeral *rn);
 void romanNumeral_add(RomanNumeral *rn_dest, RomanNumeral *rn_added);
+void romanNumeral_subtract(RomanNumeral *rn_dest, RomanNumeral *rn_added);
 void romanNumeral_free(RomanNumeral *rn);
 
 #endif /* ROMAN_NUMERAL_H */

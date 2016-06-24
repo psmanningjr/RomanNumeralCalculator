@@ -81,7 +81,6 @@ char *encode_value(int32_t value)
    }
    ptr = outputSpecifedNumberOfUnits(value, ptr,0);
    *ptr = '\0';
-   printf(" value %d created new string '%s'\n",value, result);
    return  result;
 }
 
@@ -118,15 +117,8 @@ char * outputSpecifedNumberOfUnits(int numUnits, char *ptr,int baseDenomination)
 
 int32_t decode_char(char *character)
 {
-//   int denomination = denominationOfNumeral(character); 
-//printf("denom %d digits %s\n",denomination, character);
-//   if (denomination < 0) {  return 0; }
-//   if (denomination == 0) 
-//   {
-      int32_t result = numeralValue(character);
-printf("================final result === %d\n",result);
-      return result;
-//   }
+   int32_t result = numeralValue(character);
+   return result;
 }
 
 int denominationOfNumeral(char *character)
@@ -151,11 +143,9 @@ int isRomanNumeral(int strcspnResult)
 
 int32_t numeralValue(char *digits)
 {
-printf("numeralValue_____________________________________________________\n");
    int32_t value = 0;
    int denomination = denominationOfNumeral(digits); 
    if (denomination == INVALID_DENOMINATION) {  return 0; }
-printf("denom %d digits %s\n",denomination, digits);
    int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
                                                          denomination);
    if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
@@ -166,13 +156,11 @@ printf("denom %d digits %s\n",denomination, digits);
    else
    {
       value += denominationValues[denomination];
-   printf("++++++++++++++ adding value for first digit of %s\n", digits);
       char *currentLetter = digits;
       currentLetter++;
       while(*currentLetter != '\0' && 
          (digitIsRepeat(currentLetter, denomination)))
       {
-            printf("----- adding repeat \n");
             value += denominationValues[denomination];
             currentLetter++;
       }
@@ -217,7 +205,6 @@ int subtractionDenomination(char *digits,int denomination)
 
 int digitIsRepeat(char *digits,int prevDenomination)
 {
-//   char *nextNumeral = ++digits;
    return (*digits == ROMAN_NUMERALS[prevDenomination]); 
 }
 
@@ -244,6 +231,12 @@ int32_t romanNumeral_value(RomanNumeral *rn)
 void romanNumeral_add(RomanNumeral *rn_dest, RomanNumeral *rn_added)
 {
    rn_dest->value += rn_added->value;
+   rn_dest->valueString = encode_value(rn_dest->value);
+}
+
+void romanNumeral_subtract(RomanNumeral *rn_dest, RomanNumeral *rn_added)
+{
+   rn_dest->value -= rn_added->value;
    rn_dest->valueString = encode_value(rn_dest->value);
 }
 

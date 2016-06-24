@@ -33,6 +33,8 @@
 #define ROMAN_NUMERALS_ONE_THOUSAND_STR "M"
 #define ROMAN_NUMERALS_BIGNUM_STR "MCMXLVIII"
 #define ROMAN_NUMERALS_ONE_HUNDRED_FORTY_STR "CXL"
+#define ROMAN_NUMERALS_THIRTY_SEVEN_STR "XXXVII"
+#define ROMAN_NUMERALS_TWENTY_THREE_STR "XXIII"
 
 START_TEST (test_roman_numeral_buid_with_null_string_returns_null) 
 {
@@ -316,6 +318,20 @@ START_TEST (test_roman_numeral_handles_addition)
 }
 END_TEST
 
+START_TEST (test_roman_numeral_handles_subtraction)
+{
+   RomanNumeral *rn1 = romanNumeral_new(ROMAN_NUMERALS_THIRTY_SEVEN_STR);
+   ck_assert_int_eq(romanNumeral_value(rn1), 37);
+   RomanNumeral *rn2 = romanNumeral_new(ROMAN_NUMERALS_FOURTEEN_STR);
+
+   romanNumeral_subtract(rn1,rn2);
+   ck_assert_int_eq(romanNumeral_value(rn1), 23);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn1), ROMAN_NUMERALS_TWENTY_THREE_STR);
+   romanNumeral_free(rn1);
+   romanNumeral_free(rn2);
+}
+END_TEST
+
 Suite * roman_numeral_input_suite(void)
 {
     Suite *s;
@@ -351,6 +367,7 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_handles_XIX); 
     tcase_add_test(tc_core, test_roman_numeral_handles_XXI); 
     tcase_add_test(tc_core, test_roman_numeral_handles_addition); 
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction); 
     suite_add_tcase(s, tc_core);
 
     return s;
