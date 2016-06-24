@@ -166,10 +166,11 @@ printf("denom %d digits %s\n",denomination, digits);
    else
    {
       value += denominationValues[denomination];
+   printf("++++++++++++++ adding value for first digit of %s\n", digits);
       char *currentLetter = digits;
       currentLetter++;
       while(*currentLetter != '\0' && 
-         (nextDigitIsRepeat(currentLetter, denomination)))
+         (digitIsRepeat(currentLetter, denomination)))
       {
             printf("----- adding repeat \n");
             value += denominationValues[denomination];
@@ -181,52 +182,6 @@ printf("denom %d digits %s\n",denomination, digits);
       }
    }
    return value;
-}
-
-int32_t numeralValueold(char *digits)
-{
-      int32_t value = 0;
-printf("numeralValue_____________________________________________________\n");
-   int denomination = denominationOfNumeral(digits); 
-printf("denom %d digits %s\n",denomination, digits);
-   if (denomination == INVALID_DENOMINATION) {  return 0; }
-   int subtractionSecondDigitDenomination =  nextDigitDenominationForSubtraction(digits, 
-                                                         denomination);
-   if (strlen(digits) == 2 && subtractionNeeded(subtractionSecondDigitDenomination))
-   {
-      return denominationValues[subtractionSecondDigitDenomination] - 
-                                         denominationValues[denomination];
-   }
-   else
-   {
-      char *currentLetter = digits;
-      value += denominationValues[denomination];
-      int repeatedNextDenomination;
-      while(*currentLetter != '\0') 
-      {
-            repeatedNextDenomination = denominationRepeated(currentLetter, 
-                                                               denomination); 
-   printf("-----top of loop denom = %d  repeatedNextDenom %d\n",denomination, repeatedNextDenomination);
-         currentLetter++;
-         if (repeatedDigits(repeatedNextDenomination))
-         {
-printf("************************ adding repeated %s \n", currentLetter);
-            // V value
-            value += denominationValues[denomination] + 
-                      numeralValue(currentLetter);
-// denominationValues[repeatedNextDenomination]
-//                       *(strlen(digits)-1) + denominationValues[denomination];
-         }
-         else
-         {
-            // I value
-            value += denominationValues[denomination];
-         }
-      }
-   printf("^^^^^^^^^^^^^^^^^^^^ returning value of %d\n", value);
-   }
-   return value;
-//   return denominationValues[denomination]*strlen(digits);
 }
 
 int nextDigitDenominationForSubtraction(char *digits, int denomination)
@@ -260,30 +215,10 @@ int subtractionDenomination(char *digits,int denomination)
    return INVALID_DENOMINATION;
 }
 
-int nextDigitIsRepeat(char *digits,int prevDenomination)
+int digitIsRepeat(char *digits,int prevDenomination)
 {
-   char *nextNumeral = ++digits;
-   return (*nextNumeral == ROMAN_NUMERALS[prevDenomination]); 
-}
-
-int denominationRepeated(char *digits,int denomination)
-{
-printf("denom = %d next string in repeat is %s\n",denomination, digits);
-//printf("--------------unitdenom = %d \n",unitDenomination(denomination));
-   char *nextNumeral = ++digits;
-//   int unitDenom = unitDenomination(denomination);
-   int unitDenom = denomination-1;
-   if (denomination > 0 &&
-       *nextNumeral == ROMAN_NUMERALS[unitDenom]) 
-   {
-      return unitDenom;
-   }
-   return INVALID_DENOMINATION;
-}
-
-int unitDenomination(int denomination)
-{
-   return (denomination % 2 == 0) ? denomination-2 : denomination-1;
+//   char *nextNumeral = ++digits;
+   return (*digits == ROMAN_NUMERALS[prevDenomination]); 
 }
 
 int denominationValid(int denomination)
@@ -296,10 +231,6 @@ int subtractionNeeded(int nextDigitDenomination)
    return denominationValid(nextDigitDenomination);
 }
 
-int repeatedDigits(int repeatedNextDenomination)
-{
-   return denominationValid(repeatedNextDenomination);
-}
 char *romanNumeral_numeral_str(RomanNumeral *rn)
 {
    return rn->valueString;

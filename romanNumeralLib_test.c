@@ -15,13 +15,23 @@
 #define ROMAN_NUMERALS_ELEVEN_STR "XI"
 #define ROMAN_NUMERALS_TWELVE_STR "XII"
 #define ROMAN_NUMERALS_THIRTEEN_STR "XIII"
+#define ROMAN_NUMERALS_FOURTEEN_STR "XIV"
 #define ROMAN_NUMERALS_FIFTEEN_STR "XV"
+#define ROMAN_NUMERALS_SIXTEEN_STR "XVI"
+#define ROMAN_NUMERALS_NINETEEN_STR "XIX"
 #define ROMAN_NUMERALS_TWENTY_STR "XX"
+#define ROMAN_NUMERALS_TWENTYONE_STR "XXI"
+#define ROMAN_NUMERALS_THIRTY_STR "XXX"
 #define ROMAN_NUMERALS_FOURTY_STR "XL"
 #define ROMAN_NUMERAL_FIFTY_STR "L"
+#define ROMAN_NUMERALS_NINETY_STR "XC"
 #define ROMAN_NUMERAL_ONE_HUNDRED_STR "C"
+#define ROMAN_NUMERALS_THREE_HUNDRED_STR "CCC"
+#define ROMAN_NUMERALS_FOUR_HUNDRED_STR "CD"
 #define ROMAN_NUMERAL_FIVE_HUNDRED_STR "D"
+#define ROMAN_NUMERALS_NINE_HUNDRED_STR "CM"
 #define ROMAN_NUMERAL_ONE_THOUSAND_STR "M"
+#define ROMAN_NUMERALS_BIGNUM_STR "MCMXLVIII"
 
 START_TEST (test_roman_numeral_buid_with_null_string_returns_null) 
 {
@@ -54,15 +64,16 @@ START_TEST (test_roman_numeral_buid_sets_value_and_numeral_str_method_returns_th
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_I) 
+START_TEST (test_roman_numeral_handles_letter_I) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 1);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_V) 
+START_TEST (test_roman_numeral_handles_letter_V) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIVE_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 5);
@@ -71,7 +82,7 @@ START_TEST (test_roman_numeral_decodes_letter_V)
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_digit_letter_addition) 
+START_TEST (test_roman_numeral_handles_digit_letter_addition) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_SIX_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 6);
@@ -102,59 +113,96 @@ START_TEST (test_roman_numeral_decodes_digit_letter_addition)
    ck_assert_int_eq(romanNumeral_value(rn), 13);
    ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_THIRTEEN_STR);
    romanNumeral_free(rn);
+
+   rn = romanNumeral_new(ROMAN_NUMERALS_SIXTEEN_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 16);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_SIXTEEN_STR);
+   romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_XV) 
+START_TEST (test_roman_numeral_handles_XIX) 
+{
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_NINETEEN_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 19);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_NINETEEN_STR);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_handles_XXI) 
+{
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_TWENTYONE_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 21);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_TWENTYONE_STR);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_handles_XV) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FIFTEEN_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 15);
    ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FIFTEEN_STR);
    romanNumeral_free(rn);
 }
-
 END_TEST
-START_TEST (test_roman_numeral_decodes_letter_X) 
+
+START_TEST (test_roman_numeral_handles_XIV) 
+{
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FOURTEEN_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 14);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FOURTEEN_STR);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_handles_letter_X) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_TEN_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 10);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_TEN_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_L) 
+START_TEST (test_roman_numeral_handles_letter_L) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIFTY_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 50);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIFTY_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_C) 
+START_TEST (test_roman_numeral_handles_letter_C) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 100);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_HUNDRED_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_D) 
+START_TEST (test_roman_numeral_handles_letter_D) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIVE_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 500);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIVE_HUNDRED_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_letter_M) 
+START_TEST (test_roman_numeral_handles_letter_M) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_THOUSAND_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 1000);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_THOUSAND_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_repeat_two_digits) 
+START_TEST (test_roman_numeral_handles_repeat_two_digits) 
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_TWO_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 2);
@@ -172,64 +220,26 @@ START_TEST (test_roman_numeral_decodes_repeat_two_digits)
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_repeat_three_digits) 
+START_TEST (test_roman_numeral_handles_repeat_three_digits) 
 {
    RomanNumeral *rn = romanNumeral_new("III");
    ck_assert_int_eq(romanNumeral_value(rn), 3);
    ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_THREE_STR);
    romanNumeral_free(rn);
    
-   rn = romanNumeral_new("XXX");
+   rn = romanNumeral_new(ROMAN_NUMERALS_THIRTY_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 30);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_THIRTY_STR);
    romanNumeral_free(rn);
 
-   rn = romanNumeral_new("CCC");
+   rn = romanNumeral_new(ROMAN_NUMERALS_THREE_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 300);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_THREE_HUNDRED_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_encodes_letter_V) 
-{
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIVE_STR);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIVE_STR);
-   romanNumeral_free(rn);
-}
-END_TEST
-
-START_TEST (test_roman_numeral_encodes_letter_X) 
-{
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_TEN_STR);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_TEN_STR);
-   romanNumeral_free(rn);
-}
-END_TEST
-
-START_TEST (test_roman_numeral_encodes_letter_L) 
-{
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_FIFTY_STR);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_FIFTY_STR);
-   romanNumeral_free(rn);
-}
-END_TEST
-
-START_TEST (test_roman_numeral_encodes_letter_C) 
-{
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_HUNDRED_STR);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_HUNDRED_STR);
-   romanNumeral_free(rn);
-}
-END_TEST
-
-START_TEST (test_roman_numeral_encodes_letter_M) 
-{
-   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERAL_ONE_THOUSAND_STR);
-   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERAL_ONE_THOUSAND_STR);
-   romanNumeral_free(rn);
-}
-END_TEST
-
-START_TEST (test_roman_numeral_decodes_subtraction_pair_IV)
+START_TEST (test_roman_numeral_handles_subtraction_pair_IV)
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FOUR_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 4);
@@ -238,7 +248,7 @@ START_TEST (test_roman_numeral_decodes_subtraction_pair_IV)
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_subtraction_pair_IX)
+START_TEST (test_roman_numeral_handles_subtraction_pair_IX)
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_NINE_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 9);
@@ -247,7 +257,7 @@ START_TEST (test_roman_numeral_decodes_subtraction_pair_IX)
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_subtraction_pair_XL)
+START_TEST (test_roman_numeral_handles_subtraction_pair_XL)
 {
    RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FOURTY_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 40);
@@ -256,26 +266,38 @@ START_TEST (test_roman_numeral_decodes_subtraction_pair_XL)
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_subtraction_pair_XC)
+START_TEST (test_roman_numeral_handles_subtraction_pair_XC)
 {
-   RomanNumeral *rn = romanNumeral_new("XC");
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_NINETY_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 90);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_NINETY_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_subtraction_pair_CD)
+START_TEST (test_roman_numeral_handles_subtraction_pair_CD)
 {
-   RomanNumeral *rn = romanNumeral_new("CD");
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_FOUR_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 400);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_FOUR_HUNDRED_STR);
    romanNumeral_free(rn);
 }
 END_TEST
 
-START_TEST (test_roman_numeral_decodes_subtraction_pair_CM)
+START_TEST (test_roman_numeral_handles_subtraction_pair_CM)
 {
-   RomanNumeral *rn = romanNumeral_new("CM");
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_NINE_HUNDRED_STR);
    ck_assert_int_eq(romanNumeral_value(rn), 900);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_NINE_HUNDRED_STR);
+   romanNumeral_free(rn);
+}
+END_TEST
+
+START_TEST (test_roman_numeral_handles_subtraction_pair_MCMXLVIII)
+{
+   RomanNumeral *rn = romanNumeral_new(ROMAN_NUMERALS_BIGNUM_STR);
+   ck_assert_int_eq(romanNumeral_value(rn), 1948);
+   ck_assert_str_eq(romanNumeral_numeral_str(rn), ROMAN_NUMERALS_BIGNUM_STR);
    romanNumeral_free(rn);
 }
 END_TEST
@@ -294,28 +316,26 @@ Suite * roman_numeral_input_suite(void)
     tcase_add_test(tc_core, test_roman_numeral_buid_returns_non_null) ;
     tcase_add_test(tc_core, test_roman_numeral_buid_with_empty_string_returns_null) ;
     tcase_add_test(tc_core, test_roman_numeral_buid_sets_value_and_numeral_str_method_returns_the_original_string);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_I);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_V);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_X);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_L);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_C);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_D);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_letter_M);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_two_digits);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_repeat_three_digits);
-    tcase_add_test(tc_core, test_roman_numeral_encodes_letter_V);
-    tcase_add_test(tc_core, test_roman_numeral_encodes_letter_X);
-    tcase_add_test(tc_core, test_roman_numeral_encodes_letter_L);
-    tcase_add_test(tc_core, test_roman_numeral_encodes_letter_C);
-    tcase_add_test(tc_core, test_roman_numeral_encodes_letter_M);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_digit_letter_addition);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IV);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_IX);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XL);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_XC);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CD);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_subtraction_pair_CM);
-    tcase_add_test(tc_core, test_roman_numeral_decodes_XV);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_I);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_V);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_X);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_L);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_C);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_D);
+    tcase_add_test(tc_core, test_roman_numeral_handles_letter_M);
+    tcase_add_test(tc_core, test_roman_numeral_handles_repeat_two_digits);
+    tcase_add_test(tc_core, test_roman_numeral_handles_repeat_three_digits);
+    tcase_add_test(tc_core, test_roman_numeral_handles_digit_letter_addition);
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction_pair_IV);
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction_pair_IX);
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction_pair_XL);
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction_pair_XC);
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction_pair_CD);
+    tcase_add_test(tc_core, test_roman_numeral_handles_subtraction_pair_CM);
+    tcase_add_test(tc_core, test_roman_numeral_handles_XV);
+    tcase_add_test(tc_core, test_roman_numeral_handles_XIV);
+    tcase_add_test(tc_core, test_roman_numeral_handles_XIX); 
+    tcase_add_test(tc_core, test_roman_numeral_handles_XXI); 
     suite_add_tcase(s, tc_core);
 
     return s;
