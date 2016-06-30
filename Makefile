@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS = -g
-LIBS= /usr/lib/i386-linux-gnu/libcheck.a -lm -lpthread -lrt
+LIBS= -lcheck -lm -lpthread -lrt
 
 
 OBJ = romanNumeralLib.o
